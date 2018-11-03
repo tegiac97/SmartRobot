@@ -1,6 +1,10 @@
 #include<SoftwareSerial.h>
-char junk;
-char inputString =' ';
+#include<string.h>
+
+
+char inputString;
+char fullString[30];
+int i=0;
 
 SoftwareSerial BT(0, 1);        //init bluetooth
 
@@ -13,7 +17,26 @@ void setup()                    // run once, when the sketch starts
 void loop()
 {
   if (BT.available()) {
-    inputString = BT.read();
-    Serial.print(inputString);
+    while (BT.available()) {
+      inputString = BT.read();
+      if (inputString != 'z') {
+        fullString[i] = inputString;
+        //Serial.print(i);  
+        //Serial.println(inputString);
+        delay(10);
+        i++;
+      }
+      else{
+        i = 0;
+        Serial.println(fullString);
+      }
+    }
+    
+    
+    memset(fullString, NULL, strlen(fullString));
   }
+  if(strcmp("tien",fullString)==0){
+     Serial.println("rignt command!");
+
+    }
 }
